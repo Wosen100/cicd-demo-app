@@ -12,9 +12,12 @@ phases:
       - if [ -f package.json ]; then npm test; fi
       - echo "Preparing artifact"
       - mkdir -p artifact
-      - cp -r * artifact/ || true
+      # Copy everything except the artifact folder itself
+      - shopt -s extglob
+      - cp -r !(artifact) artifact/
 
 artifacts:
   files:
-    - '/*'
-  base-directory: artifact  # this specifies where artifacts are stored
+    - '**/*'
+  base-directory: artifact
+
